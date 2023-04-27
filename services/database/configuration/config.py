@@ -1,0 +1,10 @@
+USER = ""
+DATABASE = "" 
+PASSWORD = ""
+HOST = ""
+ENCODING = ""
+PORT = ""
+
+PUBLICKEY = ''
+
+PRIVATEKEY = ""
