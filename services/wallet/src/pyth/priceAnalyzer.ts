@@ -14,6 +14,7 @@ export class PriceAnalyzer{
     }
 
     public highLow(){
+        this.checkHours()
         console.log('we gonna check price')
         let assetList = readHighLow()
         console.log(assetList)
@@ -59,6 +60,30 @@ export class PriceAnalyzer{
                     
                 }
             })
+        }
+    }
+
+    private checkHours(){
+        let date = new Date()
+        let hours = date.getHours()
+        if (hours === 0){
+            let assetList = readHighLow()
+            if(assetList){
+                assetList = new Map<string, any>(Object.entries(assetList))
+                assetList.forEach(async (value : any, key: string) => {
+                    let assetPrice = await this.pyth.getPrice(key)
+                    if(assetPrice){
+                        let priceData = readPriceNotification(key)
+                        if(priceData){
+                            let priceMap = new Map<string, any>(Object.entries(priceData))
+                            priceMap.set('low', assetPrice)
+                            priceMap.set('high', assetPrice)
+                                
+                            savePriceNotification(key, priceMap)
+                        }
+                    }
+                })
+            }
         }
     }
 }
