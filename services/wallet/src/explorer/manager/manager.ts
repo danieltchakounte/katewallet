@@ -2,6 +2,8 @@ import {MESSAGE_TAKING_IN_CHARGE, savePriceNotification} from "./utils"
 import {readInjAddress, readNewVote, readNewProposal, saveNewVote, saveNewProposal } from './utils'
 import { TransactionData, InjTransactionNotify, ProposalNotify, ProposalData, VoteNotify, VoteData} from '../notification'
 
+
+
 export class Manager{
     /**
      * 
@@ -40,7 +42,9 @@ export class Manager{
     }
 
     private  incomingTransaction(data: any, hash : string){
-        
+        console.log('incomingTransaction')
+        console.log(data)
+        console.log(data.value.amount)
         let from_address = data.value.from_address
         let to_address = data.value.to_address
         let available_wallet = readInjAddress()
@@ -70,7 +74,8 @@ export class Manager{
         }
     }
     private newProposal(data: any, hash : string){
-
+        console.log('proposal')
+        console.log(data)
         //let proposalType = ["/cosmos.params.v1beta1.ParameterChangeProposal", "/cosmos.gov.v1beta1.TextProposal"]
         
         let title = data.value.content.title
@@ -89,6 +94,18 @@ export class Manager{
     private newVote(data : any, hash : string){
         console.log('New vote')
         console.log(data)
+        let proposalId = data.value.proposal_id
+        let voter = data.value.voter
+        let voteValue = data.value.option
+
+        let voteData : VoteData = {
+            proposalId,
+            option : voteValue,
+            voter,
+            hash
+        }
+
+        let notify = new VoteNotify(voteData)
 
     }
 
@@ -239,3 +256,4 @@ export class Manager{
     }
 
 }
+
