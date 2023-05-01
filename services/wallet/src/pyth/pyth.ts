@@ -5,7 +5,7 @@ import { readHighLow, readPriceNotification, saveHighLow, savePriceNotification 
 
 export class Pyth{
     /**
-     * TODO GET PRICE ON MAJOR EXCHANGE AND PUSH ASSET PRICE ON PYTH IN INJECTIVE CHAIN
+     * 
      */
 
     private chainGrpcWasmApi : ChainGrpcWasmApi
@@ -53,7 +53,7 @@ export class Pyth{
         let exponent = data.price_feed.price.expo
 
         let price = price_feed * Math.pow(10, exponent)
-        return price
+        return parseFloat(price.toFixed(3))
     }
     private getPythAddress() : string{
         if (this.network === Network.TestnetK8s){
