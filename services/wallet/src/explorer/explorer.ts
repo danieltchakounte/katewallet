@@ -20,22 +20,28 @@ export class Explorer{
     }
 
     public listen(){
-        let round = 0
-        console.log(`Start listen transaction`)
-        let streamFn = this.indexerGrpcExplorerStream.streamTransactions.bind(this.indexerGrpcExplorerStream)
+        try {
+            console.log(`Start listen transaction`)
+            let streamFn = this.indexerGrpcExplorerStream.streamTransactions.bind(this.indexerGrpcExplorerStream)
 
-        const callback = (transactions: any) => {
-            this.priceAnalyzer.highLow()
-            this.manager.transactionAnalyzer(transactions)
-            //this.priceAnalyzer.highLow()
-            //console.log(transactions)
+            const callback = (transactions: any) => {
+                
+                this.priceAnalyzer.highLow()
+                this.manager.transactionAnalyzer(transactions)
+                
+            }
+
+            const streamFnArgs = {
+            callback
+            }
+
+            streamFn(streamFnArgs)
+
+        } catch (error) {
+            console.log(`Something when wrong... restarting the listener`)
+            this.listen()
         }
-
-        const streamFnArgs = {
-        callback
-        }
-
-        streamFn(streamFnArgs)
+        
     }
 }
     
