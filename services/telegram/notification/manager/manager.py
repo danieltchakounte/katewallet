@@ -26,8 +26,8 @@ async def proposal(context : ContextTypes.DEFAULT_TYPE):
 
     data = context.job.data
     print(data)
-    text = PROPOSAL_NOTIF['en'.format(data['title'], data['description'], data['hash'])]
-    if id in data['id']:
+    text = PROPOSAL_NOTIF['en'].format(data['title'], data['description'], data['hash'])
+    for id in data['id']:
         print(id)
         await context.bot.send_message(int(id), text=text, parse_mode='Markdown')
 
@@ -43,6 +43,7 @@ async def price(context : ContextTypes.DEFAULT_TYPE):
 
 async def vote(context: ContextTypes.DEFAULT_TYPE):
     data = context.job.data
+    print(data)
     text = VOTE_NOTIF['en'].format(data['proposalId'], data['option'], data['voter'], data['hash'])
     for id in data['id']:
         await context.bot.send_message(int(id), text=text, parse_mode='Markdown')
